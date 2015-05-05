@@ -31,11 +31,11 @@ class Amendment(object):
         self.author = author
 
     def __repr__(self):
-        text = "This amendmend is proposed by {0}.\n It refers to part {1}.\n \
-                It replaces the following passage: \n \
-                {2} \n \
-                with \n \
-                {3}".format(self.author, self.target, self.target_text, self.amendment_text)
+        text = "This amendmend is proposed by {0}.\nIt refers to part {1}.\n\
+It replaces the following passage: \n\
+{2} \n\
+with \n\
+{3}".format(self.author, self.target, self.target_text, self.amendment_text)
         return text
 
 
