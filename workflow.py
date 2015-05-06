@@ -25,7 +25,8 @@ def main():
         #for amendment in amendments:
         #    print amendment
         coauthor_network = analyzer.create_coauthor_network(amendments)
-        print coauthor_network
+        #analyzer.visualize_graph(coauthor_network)
+        analyzer.get_coauthorships(coauthor_network)
 
 def get_filelist(extension):
     """ Creates a list of files in a folder with a given extension.

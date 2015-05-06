@@ -14,8 +14,10 @@ __maintainer__ = "Christopher Kittel"
 __email__ = "web@christopherkittel.eu"
 
 
-import networkx
+import networkx as nx
+import matplotlib.pyplot as plt
 import itertools
+
 
 def get_coauthors(amendments):
     for amendment in amendments:
@@ -25,7 +27,7 @@ def get_coauthors(amendments):
 
 
 def create_coauthor_network(amendments):
-    B = networkx.Graph()
+    B = nx.Graph()
     #create bipartite graph
     for target, coauthors in get_coauthors(amendments):
         B.add_nodes_from(target, bipartite=0)
@@ -33,8 +35,25 @@ def create_coauthor_network(amendments):
         edges = itertools.product(target, coauthors)
         B.add_edges_from(edges)
 
-    print B.nodes()
-    print B.edges()
-
-
     return B
+
+
+def get_coauthorships(graph):
+    bottom_nodes, top_nodes = nx.algorithms.bipartite.sets(graph)
+    coauthors = nx.algorithms.bipartite.weighted_projected_graph(graph, bottom_nodes)
+    cotargets = nx.algorithms.bipartite.weighted_projected_graph(graph, top_nodes)
+    #print coauthors.edges(data=True)
+    visualize_graph(coauthors)
+
+def visualize_graph(graph):
+    pos=nx.shell_layout(graph)
+    nx.draw_networkx_nodes(graph,pos,node_size=20,node_shape='o',node_color='0.75')
+    edgewidth = [ d['weight'] for (u,v,d) in graph.edges(data=True)]
+    nx.draw_networkx_edges(graph,pos,
+                    width=edgewidth,edge_color='b')
+    labels = {n:n.decode("latin-1") for n in graph.nodes()}
+    nx.draw_networkx_labels(graph, pos, labels=labels, font_size=11)
+
+    plt.axis('off')
+    #plt.savefig("degree.png", bbox_inches="tight")
+    plt.show() 
