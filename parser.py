@@ -8,7 +8,7 @@ The amendment document has to be saved in html first.
 __author__ = "Christopher Kittel"
 __copyright__ = "Copyright 2015"
 __license__ = "MIT"
-__version__ = "0.1"
+__version__ = "0.2"
 __maintainer__ = "Christopher Kittel"
 __email__ = "web@christopherkittel.eu"
 
@@ -31,7 +31,7 @@ class Amendment(object):
         self.author = author
 
     def __repr__(self):
-        text = "This amendmend is proposed by {0}.\nIt refers to part {1}.\n\
+        text = "This amendment is proposed by {0}.\nIt refers to part '{1}' of the original proposal.\n\
 It replaces the following passage: \n\
 {2} \n\
 with \n\
@@ -39,33 +39,31 @@ with \n\
         return text
 
 
-def main():
-    files = get_filelist("html")
-    documents = (read_file(f) for f in files)
-    soups = (soupify(doc) for doc in documents)
-    for soup in soups:
-        #print soup.prettify()
-        authors = find_authors(soup)
-        tables = find_tables(soup)
-        for next_author, table in zip(authors, tables):
-
-            try:
-                author = get_text(next_author).encode("utf-8")
-            except:
-                author = next_author.encode("utf-8")
-            cells = get_table_cells(table)
-            target_text = get_text(cells[3]).encode("utf-8")
-            amendment_text = get_text(cells[4]).encode("utf-8")
-
-
-            print Amendment(target_text, amendment_text, author)
-
-
-def get_filelist(extension):
-    """ Creates a list of files in a folder with a given extension.
-    Navigate to this folder first.
+def main(document):
     """
-    return [f for f in glob.glob(config.datapath+"/*.{0}".format(extension))]
+    Takes an html-document as input,
+    returns an iterator of amendment-objects.
+    """
+    doc = read_file(document)
+    soup = soupify(doc)
+    #print soup.prettify()
+    authors = find_authors(soup)
+    tables = find_tables(soup)
+    for next_author, table in zip(authors, tables):
+
+        try:
+            author = get_text(next_author).encode("utf-8")
+        except:
+            author = next_author.encode("utf-8")
+        cells = get_table_cells(table)
+        target_text = get_text(cells[3]).encode("utf-8")
+        if len(target_text) < 1:
+            target_text = "New entry."
+        amendment_text = get_text(cells[4]).encode("utf-8")
+
+
+        yield Amendment(target_text, amendment_text, author)
+
 
 
 def read_file(filename):
@@ -118,4 +116,4 @@ def find_authors(soup):
 
 
 if __name__ == '__main__':
-    main()
+    main(config.datapath+"amendments280.html")
