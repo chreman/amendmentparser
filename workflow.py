@@ -22,20 +22,16 @@ import itertools
 
 def main():
     htmls = get_filelist("html")
-    #for html in htmls:
-    #    amendments = parser.main(html)
-    amendments = itertools.chain([parser.main(html) for html in htmls])
-    #for amendment in amendments:
-    #    print amendment
+    amendments = itertools.chain.from_iterable(parser.main(html) for html in htmls)
     amendment_author_network = analyzer.create_coauthor_network(amendments)
     export2graphml(amendment_author_network, "amendment-author-network")
-    #analyzer.visualize_graph(coauthor_network)
     coauthors = analyzer.get_coauthorships(amendment_author_network)
     export2graphml(coauthors, "coauthors")
 
 
 def export2graphml(graph, name):
     nx.write_graphml(graph, config.resultspath+name+".graphml", encoding="utf-8")
+
 
 def get_filelist(extension):
     """ Creates a list of files in a folder with a given extension.
