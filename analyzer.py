@@ -27,6 +27,10 @@ def get_coauthors(amendments):
 
 
 def create_coauthor_network(amendments):
+    """
+    Takes amendment objects and creates a bipartite graph,
+    with amendment nodes on one side and author nodes on the other.
+    """
     B = nx.Graph()
     #create bipartite graph
     for target, coauthors in get_coauthors(amendments):
@@ -39,11 +43,13 @@ def create_coauthor_network(amendments):
 
 
 def get_coauthorships(graph):
+    """
+    Returns the coauthor-projection of the amendment-author-network.
+    Who co-authors with whom?
+    """
     bottom_nodes, top_nodes = nx.algorithms.bipartite.sets(graph)
     coauthors = nx.algorithms.bipartite.weighted_projected_graph(graph, bottom_nodes)
     cotargets = nx.algorithms.bipartite.weighted_projected_graph(graph, top_nodes)
-    #print coauthors.edges(data=True)
-    #visualize_graph(coauthors)
     return coauthors
 
 

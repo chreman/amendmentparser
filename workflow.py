@@ -25,9 +25,10 @@ def main():
         amendments = parser.main(html)
         #for amendment in amendments:
         #    print amendment
-        coauthor_network = analyzer.create_coauthor_network(amendments)
+        amendment_author_network = analyzer.create_coauthor_network(amendments)
+        export2graphml(amendment_author_network, "amendment-author-network")
         #analyzer.visualize_graph(coauthor_network)
-        coauthors = analyzer.get_coauthorships(coauthor_network)
+        coauthors = analyzer.get_coauthorships(amendment_author_network)
         export2graphml(coauthors, "coauthors")
 
 
