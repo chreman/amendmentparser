@@ -11,3 +11,6 @@ Datapath should contain htmls of amendment documents.
 
 Switch to the script folder and run
 python workflow.py
+
+Expected output:
+A graphml-file containing co-authors of amendments. Further processing can be done with Gephi, because it produces very nice graphics and has nice layout-algorithms.
