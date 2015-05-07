@@ -17,19 +17,21 @@ import parser, analyzer
 import glob
 import config
 import networkx as nx
+import itertools
 
 
 def main():
     htmls = get_filelist("html")
-    for html in htmls:
-        amendments = parser.main(html)
-        #for amendment in amendments:
-        #    print amendment
-        amendment_author_network = analyzer.create_coauthor_network(amendments)
-        export2graphml(amendment_author_network, "amendment-author-network")
-        #analyzer.visualize_graph(coauthor_network)
-        coauthors = analyzer.get_coauthorships(amendment_author_network)
-        export2graphml(coauthors, "coauthors")
+    #for html in htmls:
+    #    amendments = parser.main(html)
+    amendments = itertools.chain([parser.main(html) for html in htmls])
+    #for amendment in amendments:
+    #    print amendment
+    amendment_author_network = analyzer.create_coauthor_network(amendments)
+    export2graphml(amendment_author_network, "amendment-author-network")
+    #analyzer.visualize_graph(coauthor_network)
+    coauthors = analyzer.get_coauthorships(amendment_author_network)
+    export2graphml(coauthors, "coauthors")
 
 
 def export2graphml(graph, name):
