@@ -6,4 +6,8 @@ Needs following python packages:
 - BeautifulSoup4
 
 Use:
-Rename example_config.py to config.py and edit to the correct location.
+Rename example_config.py to config.py and edit to the correct locations of datapath and resultspath.
+Datapath should contain htmls of amendment documents.
+
+Switch to the script folder and run
+python workflow.py

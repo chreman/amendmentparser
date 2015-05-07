@@ -16,6 +16,7 @@ __email__ = "web@christopherkittel.eu"
 import parser, analyzer
 import glob
 import config
+import networkx as nx
 
 
 def main():
@@ -26,7 +27,12 @@ def main():
         #    print amendment
         coauthor_network = analyzer.create_coauthor_network(amendments)
         #analyzer.visualize_graph(coauthor_network)
-        analyzer.get_coauthorships(coauthor_network)
+        coauthors = analyzer.get_coauthorships(coauthor_network)
+        export2graphml(coauthors, "coauthors")
+
+
+def export2graphml(graph, name):
+    nx.write_graphml(graph, config.resultspath+name+".graphml", encoding="utf-8")
 
 def get_filelist(extension):
     """ Creates a list of files in a folder with a given extension.
